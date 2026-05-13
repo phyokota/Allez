@@ -88,9 +88,13 @@ weighted_pullup_5rm_kg
 max_hang_halfcrimp_18mm_10s_kg
 min_edge_halfcrimp_mm
 
-For next session, clean dataset more in Excel like removing weird values / standardizing
-
 5/13/2026
+
+I then cleaned the dataset for weird values and standardizing the data like if people got mixed up with kg and lbs.
+
+I replaced values like "I don't climb routes" or "I don't boulder" with blank values.
+
+Some columns have multiple entries of weird values but thats a job for python to clean.
 
 
 
