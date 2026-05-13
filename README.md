@@ -94,6 +94,8 @@ I then cleaned the dataset for weird values and standardizing the data like if p
 
 I replaced values like "I don't climb routes" or "I don't boulder" with blank values.
 
+![Dataset in excel](https://github.com/phyokota/Allez/blob/0903943f743f249943c9b8c213b24d23d8e058ce/climbharder_data_excel.png)
+
 Some columns have multiple entries of weird values but thats a job for python to clean.
 
 
