@@ -98,5 +98,7 @@ I replaced values like "I don't climb routes" or "I don't boulder" with blank va
 
 Some columns have multiple entries of weird values but thats a job for python to clean.
 
+Started python data cleaning, logging progress in ipynb cleand first 6 cols.
+
 
 
