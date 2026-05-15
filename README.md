@@ -100,5 +100,9 @@ Some columns have multiple entries of weird values but thats a job for python to
 
 Started python data cleaning, logging progress in ipynb cleand first 6 cols.
 
+5/14/2026
+
+Finished cleaning all 20 columns using pandas in vscode, removed the last two which consisted of max pullups with added weight because users got confused with lbs and kgs so the data was too messy and max pushups which do not really correlate with climbing well. Exported back into a excel file to be uploaded and used in supabase.
+
 
 
