@@ -104,5 +104,11 @@ Started python data cleaning, logging progress in ipynb cleand first 6 cols.
 
 Finished cleaning all 20 columns using pandas in vscode, removed the last two which consisted of max pullups with added weight because users got confused with lbs and kgs so the data was too messy and max pushups which do not really correlate with climbing well. Exported back into a excel file to be uploaded and used in supabase.
 
+5/15
+
+Here is the cleaned data back into an excel sheet: 
+
+![Cleaned Dataset](https://github.com/phyokota/Allez/blob/25c6f5cb03bc33fb2b1a3e20e354f9b64922277b/cleaned_climbharder_data.png)
+
 
 
