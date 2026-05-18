@@ -110,5 +110,13 @@ Here is the cleaned data back into an excel sheet:
 
 ![Cleaned Dataset](https://github.com/phyokota/Allez/blob/25c6f5cb03bc33fb2b1a3e20e354f9b64922277b/cleaned_climbharder_data.png)
 
+5/18
+
+Today I learned how to connect supabase to my react application.
+There are three main steps
+1. npm install @supabase/supabase-js
+2. create .env.local and input the vite_supabase_url and vite_supabase_anon_key which are both located in supabase under the project
+3. supabaseClient.js to allow for the connection to supabase
+
 
 
