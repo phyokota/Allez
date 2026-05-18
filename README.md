@@ -118,5 +118,7 @@ There are three main steps
 2. create .env.local and input the vite_supabase_url and vite_supabase_anon_key which are both located in supabase under the project
 3. supabaseClient.js to allow for the connection to supabase
 
+I also finally connected my github repo to the project.
+
 
 
