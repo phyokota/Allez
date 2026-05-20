@@ -130,5 +130,7 @@ So there are two variables, Max Grade and Project Grade. Looking through the dat
 
 Lets make a simple visual of grade climbed vs years climbing.
 
+![Histogram](https://github.com/phyokota/Allez/blob/70b6d922820c0bf4c6138af24414279219e74680/histogram.png)
+
 
 
