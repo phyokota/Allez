@@ -120,5 +120,15 @@ There are three main steps
 
 I also finally connected my github repo to the project.
 
+5/20
+
+Let us begin setting up the variables that will make up the website.
+
+I want each row to have 3 items, so multiples of 3 would be ideal, I'm thinking 6 or 9 benchmarks based off the data set.
+
+So there are two variables, Max Grade and Project Grade. Looking through the data, I found that Max Grade was very inconsistent because the highest grade some people climbed was way higher than normal grade range. I assume this is largely because of a combination of misgraded climbs, being very soft, or climbs that highly suited the climbing style of the individual. Therefore, project grade is a more accurate representation.
+
+Lets make a simple visual of grade climbed vs years climbing.
+
 
 
