@@ -145,5 +145,7 @@ v12+ = professional
 
 But these buckets will apply to other metrics as well.
 
+After adding max hang and min edge metrics, I found that the data is much more sparse for the half crimp rather than the open crimp.
+
 
 
