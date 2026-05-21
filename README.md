@@ -132,5 +132,18 @@ Lets make a simple visual of grade climbed vs years climbing.
 
 ![Histogram](https://github.com/phyokota/Allez/blob/70b6d922820c0bf4c6138af24414279219e74680/histogram.png)
 
+Im going to create 7 buckets based on skill.
+
+v0-1 = bronze
+v1-2 = silver
+v2-4 = gold
+v4-6 = platinum
+v6-8 = diamond
+v8-10 = masters
+v10-v12 = grandmasters
+v12+ = professional
+
+But these buckets will apply to other metrics as well.
+
 
 
