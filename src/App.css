@@ -31,6 +31,7 @@
   max-width: 640px;
 }
 
+.tab-toggle,
 .grade-toggle {
   background: var(--social-bg);
   border: 1px solid var(--border);
@@ -42,6 +43,12 @@
   padding: 4px;
 }
 
+.tab-toggle {
+  flex-wrap: nowrap;
+  justify-content: stretch;
+}
+
+.tab-toggle button,
 .grade-toggle button {
   background: transparent;
   border: 0;
@@ -52,21 +59,152 @@
   padding: 10px 14px;
 }
 
+.tab-toggle button {
+  flex: 1;
+}
+
+.tab-toggle button.active,
 .grade-toggle button.active {
   background: var(--bg);
   box-shadow: var(--shadow);
   color: var(--text-h);
 }
 
+.tab-toggle button:focus-visible,
 .grade-toggle button:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+.grade-toggle {
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+.grade-toggle button {
+  flex: 1;
 }
 
 .histogram-panel {
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 28px;
+}
+
+.input-metrics-panel {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(220px, 0.8fr) minmax(260px, 1fr);
+  padding: 28px;
+}
+
+.input-metrics-panel .panel-header {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+}
+
+.rank-form {
+  display: grid;
+  gap: 10px;
+}
+
+.rank-form label,
+.rank-output span {
+  color: var(--text-h);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.rank-input-row {
+  align-items: center;
+  background: var(--social-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  max-width: 260px;
+  overflow: hidden;
+}
+
+.rank-input-row span {
+  border-right: 1px solid var(--border);
+  color: var(--text-h);
+  font: 700 22px/1 var(--mono);
+  padding: 16px 18px;
+}
+
+.rank-input-row input {
+  background: transparent;
+  border: 0;
+  box-sizing: border-box;
+  color: var(--text-h);
+  font: 700 22px/1 var(--mono);
+  min-width: 0;
+  padding: 16px;
+  width: 100%;
+}
+
+.rank-input-row input:focus {
+  outline: 0;
+}
+
+.rank-input-row:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+
+.rank-output {
+  align-self: start;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 10px;
+  padding: 22px;
+}
+
+.rank-output strong {
+  color: var(--text-h);
+  font-family: var(--heading);
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: capitalize;
+}
+
+.rank-table {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  grid-column: 1 / -1;
+  overflow: hidden;
+}
+
+.rank-table div {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  padding: 14px 18px;
+}
+
+.rank-table div + div {
+  border-top: 1px solid var(--border);
+}
+
+.rank-table div.active {
+  background: var(--accent-bg);
+}
+
+.rank-table span {
+  color: var(--text-h);
+  font-family: var(--mono);
+  font-size: 14px;
+}
+
+.rank-table strong {
+  color: var(--text-h);
+  text-transform: capitalize;
 }
 
 .panel-header {
@@ -187,14 +325,29 @@
   }
 
   .grade-toggle {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    justify-content: stretch;
+    flex-wrap: wrap;
     width: 100%;
   }
 
-  .histogram-panel {
+  .grade-toggle button {
+    flex-basis: calc(50% - 2px);
+  }
+
+  .histogram-panel,
+  .input-metrics-panel {
     padding: 20px 14px;
+  }
+
+  .input-metrics-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .rank-input-row {
+    max-width: none;
+  }
+
+  .rank-output strong {
+    font-size: 30px;
   }
 
   .panel-header {

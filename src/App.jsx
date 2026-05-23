@@ -4,42 +4,12 @@ import './App.css'
 
 const TABLE_NAME = 'benchmark_metrics'
 const METRIC_OPTIONS = {
-  max_v_grade: {
-    label: 'Max boulder grade',
-    responseLabel: 'usable grade responses',
-    emptyMessage: 'No max boulder grades were found.',
-    prefix: 'V',
-    bucketSize: 1,
-  },
-  max_route_grade: {
-    label: 'Max route grade',
-    responseLabel: 'usable grade responses',
-    emptyMessage: 'No max route grades were found.',
-    prefix: '',
-    bucketSize: 1,
-  },
   project_v_grade: {
     label: 'Boulder projects',
     responseLabel: 'usable grade responses',
     emptyMessage: 'No project boulder grades were found.',
     prefix: 'V',
     bucketSize: 1,
-  },
-  project_route_grade: {
-    label: 'Route projects',
-    responseLabel: 'usable grade responses',
-    emptyMessage: 'No project route grades were found.',
-    prefix: '',
-    bucketSize: 1,
-  },
-  max_hang_halfcrimp_18mm_10s_kg: {
-    label: 'Max hang half crimp',
-    responseLabel: 'usable hang responses',
-    bucketLabel: '5 kg bins',
-    emptyMessage: 'No half-crimp max hang values were found.',
-    suffix: ' kg',
-    bucketSize: 5,
-    compactRangeLabels: true,
   },
   max_hang_opencrimp_18mm_10s_kg: {
     label: 'Max hang open crimp',
@@ -50,13 +20,6 @@ const METRIC_OPTIONS = {
     bucketSize: 5,
     compactRangeLabels: true,
   },
-  min_edge_halfcrimp_mm: {
-    label: 'Min edge half crimp',
-    responseLabel: 'usable edge responses',
-    emptyMessage: 'No half-crimp minimum edge values were found.',
-    suffix: ' mm',
-    bucketSize: 1,
-  },
   min_edge_opencrimp_mm: {
     label: 'Min edge open crimp',
     responseLabel: 'usable edge responses',
@@ -64,9 +27,28 @@ const METRIC_OPTIONS = {
     suffix: ' mm',
     bucketSize: 1,
   },
+  max_pullup_reps: {
+    label: 'Pull-ups',
+    responseLabel: 'usable pull-up responses',
+    bucketLabel: '5 rep bins',
+    emptyMessage: 'No pull-up rep values were found.',
+    suffix: ' reps',
+    bucketSize: 5,
+    compactRangeLabels: true,
+  },
 }
 
 const METRIC_COLUMNS = Object.keys(METRIC_OPTIONS).join(', ')
+const RANK_TIERS = [
+  { min: 0, max: 1, rank: 'bronze', label: 'V0-V1' },
+  { min: 1, max: 2, rank: 'silver', label: 'V1-V2' },
+  { min: 2, max: 4, rank: 'gold', label: 'V2-V4' },
+  { min: 4, max: 6, rank: 'platinum', label: 'V4-V6' },
+  { min: 6, max: 8, rank: 'diamond', label: 'V6-V8' },
+  { min: 8, max: 10, rank: 'masters', label: 'V8-V10' },
+  { min: 10, max: 12, rank: 'grandmasters', label: 'V10-V12' },
+  { min: 12, max: Number.POSITIVE_INFINITY, rank: 'professional', label: 'V12+' },
+]
 
 function normalizeMetricValue(value) {
   if (value === null || value === undefined || value === '') {
@@ -117,9 +99,21 @@ function buildHistogram(rows, selectedMetric, option) {
   )
 }
 
+function getRankForVGrade(value) {
+  const grade = normalizeMetricValue(value)
+
+  if (grade === null || grade < 0) {
+    return null
+  }
+
+  return RANK_TIERS.find((tier) => grade >= tier.min && grade < tier.max)
+}
+
 function App() {
   const [rows, setRows] = useState([])
-  const [selectedMetric, setSelectedMetric] = useState('max_v_grade')
+  const [activeTab, setActiveTab] = useState('distribution')
+  const [selectedMetric, setSelectedMetric] = useState('project_v_grade')
+  const [inputGrade, setInputGrade] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -152,6 +146,7 @@ function App() {
   )
   const totalResponses = histogram.reduce((sum, bin) => sum + bin.count, 0)
   const highestCount = Math.max(...histogram.map((bin) => bin.count), 0)
+  const inputRank = getRankForVGrade(inputGrade)
 
   return (
     <main className="dashboard">
@@ -160,82 +155,150 @@ function App() {
         <div className="intro-copy">
           <h1>Metric distribution</h1>
           <p>
-            Histograms of climbers' grades, max hangs, and minimum edge sizes
-            loaded from the Supabase <code>{TABLE_NAME}</code> table.
+            Histograms of climbers' boulder projects, open-crimp strength,
+            minimum edge sizes, and pull-ups loaded from the Supabase{' '}
+            <code>{TABLE_NAME}</code> table.
           </p>
         </div>
 
-        <div className="grade-toggle" aria-label="Metric type">
-          {Object.entries(METRIC_OPTIONS).map(([value, option]) => (
-            <button
-              className={value === selectedMetric ? 'active' : ''}
-              key={value}
-              onClick={() => setSelectedMetric(value)}
-              type="button"
-            >
-              {option.label}
-            </button>
-          ))}
+        <div className="tab-toggle" aria-label="Dashboard tab">
+          <button
+            className={activeTab === 'distribution' ? 'active' : ''}
+            onClick={() => setActiveTab('distribution')}
+            type="button"
+          >
+            Distributions
+          </button>
+          <button
+            className={activeTab === 'input' ? 'active' : ''}
+            onClick={() => setActiveTab('input')}
+            type="button"
+          >
+            Input metrics
+          </button>
         </div>
       </section>
 
-      <section className="histogram-panel">
-        <div className="panel-header">
-          <div>
-            <h2>{selectedOption.label}</h2>
-            <p>
-              {totalResponses} {selectedOption.responseLabel}
-              {selectedOption.bucketLabel && ` · ${selectedOption.bucketLabel}`}
-            </p>
+      {activeTab === 'distribution' && (
+        <>
+          <div className="grade-toggle" aria-label="Metric type">
+            {Object.entries(METRIC_OPTIONS).map(([value, option]) => (
+              <button
+                className={value === selectedMetric ? 'active' : ''}
+                key={value}
+                onClick={() => setSelectedMetric(value)}
+                type="button"
+              >
+                {option.label}
+              </button>
+            ))}
           </div>
-          {isLoading && <span className="status">Loading Supabase data</span>}
-          {errorMessage && <span className="status error">Supabase error</span>}
-        </div>
 
-        {errorMessage && <p className="message">{errorMessage}</p>}
+          <section className="histogram-panel">
+            <div className="panel-header">
+              <div>
+                <h2>{selectedOption.label}</h2>
+                <p>
+                  {totalResponses} {selectedOption.responseLabel}
+                  {selectedOption.bucketLabel && ` · ${selectedOption.bucketLabel}`}
+                </p>
+              </div>
+              {isLoading && <span className="status">Loading Supabase data</span>}
+              {errorMessage && <span className="status error">Supabase error</span>}
+            </div>
 
-        {!isLoading && !errorMessage && histogram.length === 0 && (
-          <p className="message">{selectedOption.emptyMessage}</p>
-        )}
+            {errorMessage && <p className="message">{errorMessage}</p>}
 
-        {histogram.length > 0 && (
-          <div className="histogram" role="list" aria-label="Metric histogram">
-            {histogram.map((bin) => {
-              const barHeight = `${Math.max((bin.count / highestCount) * 100, 4)}%`
-              const metricLabel = formatBinLabel(bin.binStart, selectedOption)
+            {!isLoading && !errorMessage && histogram.length === 0 && (
+              <p className="message">{selectedOption.emptyMessage}</p>
+            )}
 
-              return (
-                <div
-                  className="histogram-bin"
-                  key={bin.binStart}
-                  role="listitem"
-                >
-                  <span className="bar-count">{bin.count}</span>
-                  <div className="bar-track" aria-hidden="true">
-                    <div className="bar-fill" style={{ height: barHeight }} />
-                  </div>
-                  <span className="bar-label">{metricLabel}</span>
-                </div>
-              )
-            })}
+            {histogram.length > 0 && (
+              <div className="histogram" role="list" aria-label="Metric histogram">
+                {histogram.map((bin) => {
+                  const barHeight = `${Math.max((bin.count / highestCount) * 100, 4)}%`
+                  const metricLabel = formatBinLabel(bin.binStart, selectedOption)
+
+                  return (
+                    <div
+                      className="histogram-bin"
+                      key={bin.binStart}
+                      role="listitem"
+                    >
+                      <span className="bar-count">{bin.count}</span>
+                      <div className="bar-track" aria-hidden="true">
+                        <div className="bar-fill" style={{ height: barHeight }} />
+                      </div>
+                      <span className="bar-label">{metricLabel}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </section>
+
+          <section className="summary-grid" aria-label="Histogram summary">
+            <div>
+              <span>{rows.length}</span>
+              <p>rows fetched</p>
+            </div>
+            <div>
+              <span>{histogram.length}</span>
+              <p>metric bins</p>
+            </div>
+            <div>
+              <span>{highestCount}</span>
+              <p>largest bin</p>
+            </div>
+          </section>
+        </>
+      )}
+
+      {activeTab === 'input' && (
+        <section className="input-metrics-panel">
+          <div className="panel-header">
+            <div>
+              <h2>Input metrics</h2>
+              <p>Enter a V grade to see the matching rank.</p>
+            </div>
           </div>
-        )}
-      </section>
 
-      <section className="summary-grid" aria-label="Histogram summary">
-        <div>
-          <span>{rows.length}</span>
-          <p>rows fetched</p>
-        </div>
-        <div>
-          <span>{histogram.length}</span>
-          <p>metric bins</p>
-        </div>
-        <div>
-          <span>{highestCount}</span>
-          <p>largest bin</p>
-        </div>
-      </section>
+          <div className="rank-form">
+            <label htmlFor="v-grade-input">V grade</label>
+            <div className="rank-input-row">
+              <span aria-hidden="true">V</span>
+              <input
+                id="v-grade-input"
+                inputMode="decimal"
+                min="0"
+                onChange={(event) => setInputGrade(event.target.value)}
+                placeholder="6"
+                step="1"
+                type="number"
+                value={inputGrade}
+              />
+            </div>
+          </div>
+
+          <div className="rank-output" aria-live="polite">
+            <span>Rank</span>
+            <strong>{inputRank ? inputRank.rank : 'Enter a V grade'}</strong>
+            {inputRank && <p>{inputRank.label} climber ranking</p>}
+          </div>
+
+          <div className="rank-table" aria-label="Rank tiers">
+            {RANK_TIERS.map((tier) => (
+              <div
+                className={inputRank?.rank === tier.rank ? 'active' : ''}
+                key={tier.rank}
+              >
+                <span>{tier.label}</span>
+                <strong>{tier.rank}</strong>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </main>
   )
 }
