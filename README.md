@@ -159,6 +159,9 @@ I've decided to focus on four metrics.
 3. Min edge hang (open crimp)
 4. pullups
 
+Here is what the current site looks like, its a very rough sketch but taking this step by step
+![Website_v1](https://github.com/phyokota/Allez/blob/7bd0dec6789607e9e2982f09909d241e9989444c/website_v1.png)
+
 
 
 
