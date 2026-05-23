@@ -128,10 +128,6 @@ I want each row to have 3 items, so multiples of 3 would be ideal, I'm thinking 
 
 So there are two variables, Max Grade and Project Grade. Looking through the data, I found that Max Grade was very inconsistent because the highest grade some people climbed was way higher than normal grade range. I assume this is largely because of a combination of misgraded climbs, being very soft, or climbs that highly suited the climbing style of the individual. Therefore, project grade is a more accurate representation.
 
-Lets make a simple visual of grade climbed vs years climbing.
-
-![Histogram](https://github.com/phyokota/Allez/blob/70b6d922820c0bf4c6138af24414279219e74680/histogram.png)
-
 Im going to create 7 buckets based on skill.
 
 v0-1 = bronze
@@ -146,6 +142,24 @@ v12+ = professional
 But these buckets will apply to other metrics as well.
 
 After adding max hang and min edge metrics, I found that the data is much more sparse for the half crimp rather than the open crimp.
+
+5/22
+
+Lets make a simple visual of grade climbed vs years climbing.
+
+![Project_boulder](https://github.com/phyokota/Allez/blob/70b6d922820c0bf4c6138af24414279219e74680/histogram.png)
+![Max_boulder](https://github.com/phyokota/Allez/blob/d94326cf07c6c32d73cd2155d2e2e28e8ff009d9/max_boulder.png)
+
+What do we notice? Well it seems like the median goes from v4 to v6 between project boulders and max boulders. Why might this be the case. Well max boulder describes the highest grade someone climbed taking in account the fact that the boulder might be soft, or fit someones style of climbing perfectly. It's very likely that some people have climbed a boulder that isn't representative of their true grade level. Thus, the project boulder histogram better represents the data.
+
+I've decided to focus on four metrics.
+
+1. Project grade
+2. Max hang on 20m (open crimp)
+3. Min edge hang (open crimp)
+4. pullups
+
+
 
 
 
