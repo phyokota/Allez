@@ -162,6 +162,12 @@ I've decided to focus on four metrics.
 Here is what the current site looks like, its a very rough sketch but taking this step by step
 ![Website_v1](https://github.com/phyokota/Allez/blob/7bd0dec6789607e9e2982f09909d241e9989444c/website_v1.png)
 
+5/26
+
+I created the 4 tabs of the website that I'm going to use including, Benchmarks, Input Metrics, Grade Calculator, and Distributions (might change name later)
+
+Created two ipynb files in order to play with the data more and find good rankings for the input metrics tab.
+
 
 
 
