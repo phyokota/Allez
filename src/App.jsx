@@ -39,6 +39,18 @@ const METRIC_OPTIONS = {
 }
 
 const METRIC_COLUMNS = Object.keys(METRIC_OPTIONS).join(', ')
+const DASHBOARD_TABS = [
+  { id: 'benchmarks', label: 'Benchmarks' },
+  { id: 'input', label: 'Input metrics' },
+  { id: 'calculator', label: 'Grade calculator' },
+  { id: 'distribution', label: 'Distributions' },
+]
+const BENCHMARK_CARDS = [
+  { label: 'Project Grade', icon: 'V' },
+  { label: 'Max Hang Secs', icon: '10s' },
+  { label: 'Min Edge Crimp', icon: 'mm' },
+  { label: 'Max Pull-ups', icon: 'PU' },
+]
 const RANK_TIERS = [
   { min: 0, max: 1, rank: 'bronze', label: 'V0-V1' },
   { min: 1, max: 2, rank: 'silver', label: 'V1-V2' },
@@ -111,7 +123,7 @@ function getRankForVGrade(value) {
 
 function App() {
   const [rows, setRows] = useState([])
-  const [activeTab, setActiveTab] = useState('distribution')
+  const [activeTab, setActiveTab] = useState('benchmarks')
   const [selectedMetric, setSelectedMetric] = useState('project_v_grade')
   const [inputGrade, setInputGrade] = useState('')
   const [isLoading, setIsLoading] = useState(true)
@@ -162,22 +174,43 @@ function App() {
         </div>
 
         <div className="tab-toggle" aria-label="Dashboard tab">
-          <button
-            className={activeTab === 'distribution' ? 'active' : ''}
-            onClick={() => setActiveTab('distribution')}
-            type="button"
-          >
-            Distributions
-          </button>
-          <button
-            className={activeTab === 'input' ? 'active' : ''}
-            onClick={() => setActiveTab('input')}
-            type="button"
-          >
-            Input metrics
-          </button>
+          {DASHBOARD_TABS.map((tab) => (
+            <button
+              className={activeTab === tab.id ? 'active' : ''}
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              type="button"
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
       </section>
+
+      {activeTab === 'benchmarks' && (
+        <section className="benchmarks-panel">
+          <div className="panel-header">
+            <div>
+              <h2>Benchmarks</h2>
+              <p>Your current benchmark ranks.</p>
+            </div>
+          </div>
+
+          <div className="benchmark-grid">
+            {BENCHMARK_CARDS.map((benchmark) => (
+              <div className="benchmark-card" key={benchmark.label}>
+                <span className="benchmark-icon" aria-hidden="true">
+                  {benchmark.icon}
+                </span>
+                <div>
+                  <h3>{benchmark.label}</h3>
+                  <strong>Unranked</strong>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {activeTab === 'distribution' && (
         <>
@@ -236,7 +269,6 @@ function App() {
               </div>
             )}
           </section>
-
           <section className="summary-grid" aria-label="Histogram summary">
             <div>
               <span>{rows.length}</span>
@@ -296,6 +328,17 @@ function App() {
                 <strong>{tier.rank}</strong>
               </div>
             ))}
+          </div>
+        </section>
+      )}
+
+      {activeTab === 'calculator' && (
+        <section className="placeholder-panel">
+          <div className="panel-header">
+            <div>
+              <h2>Grade calculator</h2>
+              <p>Grade calculator coming soon.</p>
+            </div>
           </div>
         </section>
       )}
