@@ -168,6 +168,10 @@ I created the 4 tabs of the website that I'm going to use including, Benchmarks,
 
 Created two ipynb files in order to play with the data more and find good rankings for the input metrics tab.
 
+5/27
+
+Altered the Blueprint markdown file to have the ranks of certain benchmarks. For next time: change the distributions tab into a training tab and merge the distributions into the benchmarks tab.
+
 
 
 
